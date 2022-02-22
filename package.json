@@ -1,0 +1,21 @@
+{
+  "name": "tokens-generator",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "files": [
+    "src"
+  ],
+  "bin": {
+    "tokens-generator": "./src/cli.js"
+  },
+  "scripts": {
+    "start": "tokens-generator --fileId=yIiBwSCzgJmDxYtfh7kc0G"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "arg": "^5.0.1"
+  }
+}
