@@ -33,7 +33,7 @@ class FigmaTokenController {
     mapTokens(children, brand) {
         const figmaToken = new FigmaToken(brand);
         const tokensNode = children.find(child => child.name.toLowerCase().indexOf(brand) >= 0);
-        const tokens = figmaToken.lookForHeaderNode(tokensNode && tokensNode.children);
+        const tokens = figmaToken.findTokensNode(tokensNode && tokensNode.children);
         figmaToken.makeTokens(tokens.children);
         return figmaToken.tokens;
     }

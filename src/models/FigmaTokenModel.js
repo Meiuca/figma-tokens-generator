@@ -17,7 +17,7 @@ class FigmaToken {
         return this.tokens;
     }
 
-    lookForHeaderNode(children) {
+    findTokensNode(children) {
         if (children && children.length > 0) {
             children.forEach(child => {
                 if (child.name === 'Tokens') {
@@ -27,7 +27,7 @@ class FigmaToken {
 
             if (this.tokensChildren.length === 0) {
                 children.forEach(child => {
-                    return this.lookForHeaderNode(child.children || []);
+                    return this.findTokensNode(child.children || []);
                 });
             }
         }
