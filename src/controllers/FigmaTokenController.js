@@ -1,3 +1,6 @@
+const fse = require('fs-extra');
+const path = require('path');
+
 const FigmaService = require("../services");
 const FigmaToken = require("../models/FigmaTokenModel");
 
@@ -5,11 +8,26 @@ class FigmaTokenController {
     
     constructor() {}
 
-    async getTokens(fileId) {
+    getDirectory(brand) {
+        const _path = path.normalize(`${process.cwd()}/src/assets/properties/`);
+        if (brand === 'global') {
+            return `${_path}/globals/`
+        } else {
+            return `${_path}/brands/${brand}/default`;
+        }
+    }
+
+    writeTokensToDisk(json, name, brand){
+        const _path = this.getDirectory(brand);
+        fse.outputFileSync(path.normalize(`${_path}/${name}.json`), JSON.stringify(json));
+    }
+
+    async getTokens(fileId, brand) {
         const figmaAPI = new FigmaService();
         const tokensApiData = await figmaAPI.getFigmaTokens(fileId);
-    
-        return this.mapTokens(tokensApiData['children'], 'estácio');
+        const tokens = this.mapTokens(tokensApiData['children'], brand);
+        this.writeTokensToDisk(tokens, 'tokens', brand);
+        return tokens;
     }
 
     mapTokens(children, brand) {
@@ -18,11 +36,7 @@ class FigmaTokenController {
         const tokens = figmaToken.lookForHeaderNode(tokensNode && tokensNode.children);
         figmaToken.makeTokens(tokens.children);
         return figmaToken.tokens;
-    }  
-
-    findTokens(children) {
-        return new FigmaToken(children).tokens;
-    }  
+    }
 }
 
 module.exports = FigmaTokenController;

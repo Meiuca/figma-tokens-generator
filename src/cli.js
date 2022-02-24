@@ -6,18 +6,21 @@ const FigmaTokenController = require("./controllers/FigmaTokenController");
 function getParameters() {
     const args = arg(
     {
-        '--fileId': String
+        '--brandTokensFileId': String,
+        '--globalTokensFileId': String
     }
     );
     return {
-        fileId: args['--fileId']
+        brandTokensFileId: args['--brandTokensFileId'],
+        globalTokensFileId: args['--globalTokensFileId']
     };
 }
 
 function main() {
     const args = getParameters();
     const figmaTokenController = new FigmaTokenController();
-    figmaTokenController.getTokens(args.fileId);
+    args.brandTokensFileId && figmaTokenController.getTokens(args.brandTokensFileId, 'estácio');
+    args.globalTokensFileId && figmaTokenController.getTokens(args.globalTokensFileId, 'global');
 }
 
 main();

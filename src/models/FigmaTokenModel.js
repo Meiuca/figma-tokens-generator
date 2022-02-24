@@ -7,7 +7,7 @@ class FigmaToken {
 
     brand = '';
     tokens = [];
-    brandChildren = [];
+    tokensChildren = [];
 
     constructor(brand, type) {
         this.brand = brand;
@@ -21,26 +21,17 @@ class FigmaToken {
         if (children && children.length > 0) {
             children.forEach(child => {
                 if (child.name === 'Tokens') {
-                    this.brandChildren = child;
+                    this.tokensChildren = child;
                 }
             });
 
-            if (this.brandChildren.length === 0) {
+            if (this.tokensChildren.length === 0) {
                 children.forEach(child => {
                     return this.lookForHeaderNode(child.children || []);
                 });
             }
         }
-        return this.brandChildren;
-    }
-
-    findBrand(children) {
-        children.forEach((child, index) => {
-            if (child.name === 'Header') {
-                this.brandChildren = children[index + 1];
-            }
-        });
-        return this.brandChildren;
+        return this.tokensChildren;
     }
 
     makeTokens(children) {
