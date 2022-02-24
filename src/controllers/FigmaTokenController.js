@@ -17,17 +17,29 @@ class FigmaTokenController {
         }
     }
 
-    writeTokensToDisk(json, name, brand){
+    writeTokensToDisk(json, fileName, brand){
         const _path = this.getDirectory(brand);
-        fse.outputFileSync(path.normalize(`${_path}/${name}.json`), JSON.stringify(json));
+        fse.outputFileSync(path.normalize(`${_path}/${fileName}.json`), JSON.stringify(json, 0, 4));
     }
 
     async getTokens(fileId, brand) {
         const figmaAPI = new FigmaService();
         const tokensApiData = await figmaAPI.getFigmaTokens(fileId);
         const tokens = this.mapTokens(tokensApiData['children'], brand);
-        this.writeTokensToDisk(tokens, 'tokens', brand);
         return tokens;
+    }
+
+    writeFinalTokens(tokenJson, brand) {
+        const finalTokensJson = [];
+        Object.keys(tokenJson).forEach(token => {
+            const json = {
+                [token]: tokenJson[token]
+            }            
+            finalTokensJson.push(json);
+            this.writeTokensToDisk(json, token, brand)
+        });
+
+        return finalTokensJson;
     }
 
     mapTokens(children, brand) {
@@ -35,7 +47,8 @@ class FigmaTokenController {
         const tokensNode = children.find(child => child.name.toLowerCase().indexOf(brand) >= 0);
         const tokens = figmaToken.findTokensNode(tokensNode && tokensNode.children);
         figmaToken.makeTokens(tokens.children);
-        return figmaToken.tokens;
+        const tokenJson = figmaToken.splitTokens(figmaToken.tokens);
+        this.writeFinalTokens(tokenJson, brand);
     }
 }
 

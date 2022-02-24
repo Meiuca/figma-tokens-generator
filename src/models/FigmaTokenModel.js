@@ -60,6 +60,46 @@ class FigmaToken {
             this.tokens.push(designToken);
         }
     }
+
+    makeJson(partsOfToken, value, index = 0) {
+        if (index === partsOfToken.length - 1) {
+            return {
+                [partsOfToken[index]]: {
+                    "value": value,
+                    "type": "color"
+                }
+            };
+        }
+        return {
+            [partsOfToken[index]]: this.makeJson(partsOfToken, value, index + 1)
+        };
+    }
+
+    splitTokens(tokens) {
+        let fileName = '';
+        let tokenJson = {};
+
+        tokens.forEach(token => {
+            const partsOfToken = token.name.split('-');
+            fileName = partsOfToken[0];
+            const json = this.makeJson(partsOfToken, token.value);
+            tokenJson = this.deepMerge(tokenJson, json);
+        });
+
+        return tokenJson;
+    }
+
+    deepMerge(source, target) {
+        return void Object.keys(target).forEach(key => {
+            source[key] instanceof Object && target[key] instanceof Object
+                ? source[key] instanceof Array && target[key] instanceof Array
+                    ? void (source[key] = Array.from(new Set(source[key].concat(target[key]))))
+                    : !(source[key] instanceof Array) && !(target[key] instanceof Array)
+                        ? void this.deepMerge(source[key], target[key])
+                        : void (source[key] = target[key])
+                : void (source[key] = target[key]);
+        }) || source;
+    }
 }
 
 module.exports = FigmaToken;
