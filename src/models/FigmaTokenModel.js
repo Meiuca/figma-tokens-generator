@@ -1,45 +1,74 @@
-const { OFFSET_VALUE_TO_TOKEN_VALUE, CHARACTER_TO_INDICATE_VARIABLE } = require('../utils/constants');
+const { 
+    OFFSET_VALUE_TO_TOKEN_VALUE, 
+    CHARACTER_TO_INDICATE_VARIABLE 
+} = require('../utils/constants');
 
-class FigmaColor {
+class FigmaToken {
 
-    colorTokens = [];
+    brand = '';
+    tokens = [];
+    brandChildren = [];
 
-    constructor(children, type) {
-        this.findTokens(children);
+    constructor(brand, type) {
+        this.brand = brand;
     }
 
     get tokens() {
-        return this.colorTokens;
+        return this.tokens;
     }
 
-    findTokens(children) {
-        this.makeTokens(children);
+    lookForHeaderNode(children) {
+        if (children && children.length > 0) {
+            children.forEach(child => {
+                if (child.name === 'Tokens') {
+                    this.brandChildren = child;
+                }
+            });
+
+            if (this.brandChildren.length === 0) {
+                children.forEach(child => {
+                    return this.lookForHeaderNode(child.children || []);
+                });
+            }
+        }
+        return this.brandChildren;
+    }
+
+    findBrand(children) {
+        children.forEach((child, index) => {
+            if (child.name === 'Header') {
+                this.brandChildren = children[index + 1];
+            }
+        });
+        return this.brandChildren;
     }
 
     makeTokens(children) {
         let designToken = {};
-        children.forEach((child, index) => {
-            if (child.name.includes(CHARACTER_TO_INDICATE_VARIABLE)) 
-            {
-                designToken.name = child.name.toLowerCase().replace(CHARACTER_TO_INDICATE_VARIABLE, '');
-                designToken.value = children[OFFSET_VALUE_TO_TOKEN_VALUE + index].characters;
-            }
-        });
-
-        if (!designToken.name || !designToken.value) {
-            children.forEach(child => {
-                this.makeTokens(child.children || []);
+        if (children && children.length > 0) {
+            children.forEach((child, index) => {
+                if (child.name.includes(CHARACTER_TO_INDICATE_VARIABLE)) 
+                {
+                    designToken.name = child.name.toLowerCase().replace(CHARACTER_TO_INDICATE_VARIABLE, '');
+                    designToken.value = children[index + OFFSET_VALUE_TO_TOKEN_VALUE].characters;
+                }
             });
-        } else {
-            this.pushDesignToken(designToken);
+
+            if (!designToken.name || !designToken.value) {
+                children.forEach(child => {
+                    this.makeTokens(child.children || []);
+                });
+            } else {
+                this.pushDesignToken(designToken);
+            }
         }
     }
 
     pushDesignToken(designToken) {
-        if (!this.colorTokens.some(font => font.name === designToken.name)) {
-            this.colorTokens.push(designToken);
+        if (!this.tokens.some(token => token.name === designToken.name)) {
+            this.tokens.push(designToken);
         }
     }
 }
 
-module.exports = FigmaColor;
+module.exports = FigmaToken;

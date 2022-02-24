@@ -32,8 +32,10 @@ class FigmaBrand {
         if (child.name === 'Tokens')
             this.brandChildren = child.children;
 
-        if (child.characters && child.characters.toLowerCase() === this.brand.toLowerCase())
+        if (child.characters && child.characters.toLowerCase() === this.brand.toLowerCase()) {
+            this.brandChildren = child;
             return true;
+        }
         else
             return this.findBrand(child.children || []);
     }

@@ -10,15 +10,10 @@ class FigmaService{
     });
   }
 
-  async getFigmaBrandTokens(fileId) {
+  async getFigmaTokens(fileId) {
     const figmaResponse = await this.restApi.get(`files/${fileId}`);
     return figmaResponse.data['document'];
-  }
-
-  async getFigmaGlobalTokens(fileId) {
-    const figmaResponse = await this.restApi.get(`files/${fileId}`);
-    return figmaResponse.data['document'];
-  }  
+  } 
 }
 
 module.exports = FigmaService;
