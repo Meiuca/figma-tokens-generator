@@ -9,7 +9,7 @@ class FigmaToken {
     tokens = [];
     tokensChildren = [];
 
-    constructor(brand, type) {
+    constructor(brand) {
         this.brand = brand;
     }
 
