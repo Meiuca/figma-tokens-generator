@@ -63,10 +63,14 @@ class FigmaToken {
 
     makeJson(partsOfToken, value, index = 0) {
         if (index === partsOfToken.length - 1) {
-            return {
+            return value.includes('#') ? {
                 [partsOfToken[index]]: {
                     "value": value,
-                    "type": "color"
+                    'type': 'color'
+                }
+            } : { 
+                [partsOfToken[index]]: {
+                    "value": value
                 }
             };
         }
@@ -76,12 +80,10 @@ class FigmaToken {
     }
 
     splitTokens(tokens) {
-        let fileName = '';
         let tokenJson = {};
 
         tokens.forEach(token => {
-            const partsOfToken = token.name.split('-');
-            fileName = partsOfToken[0];
+            const partsOfToken = token.value.includes('#') ? (`colors-${token.name}`).split('-') : token.name.split('-');
             const json = this.makeJson(partsOfToken, token.value);
             tokenJson = this.deepMerge(tokenJson, json);
         });

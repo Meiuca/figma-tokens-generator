@@ -1,11 +1,14 @@
 const axios = require('axios');
 
 class FigmaService{
-  constructor(){
+
+  authenticationToken = '';
+
+  constructor(authenticationToken){
     this.restApi = axios.create({
       baseURL: 'https://api.figma.com/v1/',
       headers: {
-        'X-Figma-Token': '219518-1f6551c0-b808-4490-9bb2-62565c780ed2'
+        'X-Figma-Token': authenticationToken
       }
     });
   }

@@ -10,7 +10,7 @@
     "tokens-generator": "./src/cli.js"
   },
   "scripts": {
-    "start": "tokens-generator --brandTokensFileId=yIiBwSCzgJmDxYtfh7kc0G --globalTokensFileId=2vciHObV1UviJ3f0ItoJVK"
+    "start": "rm -rf src/assets && tokens-generator --authenticationToken=219518-1f6551c0-b808-4490-9bb2-62565c780ed2 --brandTokensFileId=yIiBwSCzgJmDxYtfh7kc0G --globalTokensFileId=2vciHObV1UviJ3f0ItoJVK"
   },
   "keywords": [],
   "author": "",

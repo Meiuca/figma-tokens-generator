@@ -5,15 +5,18 @@ const FigmaService = require("../services");
 const FigmaToken = require("../models/FigmaTokenModel");
 
 class FigmaTokenController {
-    
-    constructor() {}
+    authenticationToken = '';
+
+    constructor(authenticationToken) {
+        this.authenticationToken = authenticationToken;
+    }
 
     getDirectory(brand) {
         const _path = path.normalize(`${process.cwd()}/src/assets/properties/`);
         if (brand === 'global') {
             return `${_path}/globals/`
         } else {
-            return `${_path}/brands/${brand}/default`;
+            return `${_path}/brands/${brand.normalize("NFD").replace(/[\u0300-\u036f]/g, "")}/default`;
         }
     }
 
@@ -23,23 +26,17 @@ class FigmaTokenController {
     }
 
     async getTokens(fileId, brand) {
-        const figmaAPI = new FigmaService();
+        const figmaAPI = new FigmaService(this.authenticationToken);
         const tokensApiData = await figmaAPI.getFigmaTokens(fileId);
         const tokens = this.mapTokens(tokensApiData['children'], brand);
         return tokens;
     }
 
-    writeFinalTokens(tokenJson, brand) {
-        const finalTokensJson = [];
-        Object.keys(tokenJson).forEach(token => {
-            const json = {
-                [token]: tokenJson[token]
-            }            
-            finalTokensJson.push(json);
+    writeFinalTokens(tokensJson, brand) {
+        Object.keys(tokensJson).forEach(token => {
+            let json = token.includes('color') ? tokensJson[token] : { [token]: tokensJson[token] };
             this.writeTokensToDisk(json, token, brand)
         });
-
-        return finalTokensJson;
     }
 
     mapTokens(children, brand) {
@@ -47,8 +44,8 @@ class FigmaTokenController {
         const tokensNode = children.find(child => child.name.toLowerCase().indexOf(brand) >= 0);
         const tokens = figmaToken.findTokensNode(tokensNode && tokensNode.children);
         figmaToken.makeTokens(tokens.children);
-        const tokenJson = figmaToken.splitTokens(figmaToken.tokens);
-        this.writeFinalTokens(tokenJson, brand);
+        const tokensJson = figmaToken.splitTokens(figmaToken.tokens);
+        this.writeFinalTokens(tokensJson, brand);
     }
 }
 

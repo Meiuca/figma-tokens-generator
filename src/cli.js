@@ -6,11 +6,13 @@ const FigmaTokenController = require("./controllers/FigmaTokenController");
 function getParameters() {
     const args = arg(
     {
+        '--authenticationToken': String,
         '--brandTokensFileId': String,
         '--globalTokensFileId': String
     }
     );
     return {
+        authenticationToken: args['--authenticationToken'],
         brandTokensFileId: args['--brandTokensFileId'],
         globalTokensFileId: args['--globalTokensFileId']
     };
@@ -18,7 +20,7 @@ function getParameters() {
 
 function main() {
     const args = getParameters();
-    const figmaTokenController = new FigmaTokenController();
+    const figmaTokenController = new FigmaTokenController(args.authenticationToken);
     args.brandTokensFileId && figmaTokenController.getTokens(args.brandTokensFileId, 'estácio');
     args.globalTokensFileId && figmaTokenController.getTokens(args.globalTokensFileId, 'global');
 }
