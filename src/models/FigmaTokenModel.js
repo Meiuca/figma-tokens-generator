@@ -20,7 +20,7 @@ class FigmaToken {
     findTokensNode(children) {
         if (children && children.length > 0) {
             children.forEach(child => {
-                if (child.name === 'Tokens') {
+                if (child.name.toLowerCase() === 'tokens') {
                     this.tokensChildren = child;
                 }
             });
@@ -65,12 +65,12 @@ class FigmaToken {
         if (index === partsOfToken.length - 1) {
             return value.includes('#') ? {
                 [partsOfToken[index]]: {
-                    "value": value,
+                    'value': value,
                     'type': 'color'
                 }
             } : { 
                 [partsOfToken[index]]: {
-                    "value": value
+                    'value': value
                 }
             };
         }
