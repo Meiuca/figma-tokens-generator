@@ -12,11 +12,12 @@ class FigmaTokenController {
     }
 
     getDirectory(brand) {
-        const _path = path.normalize(`${process.cwd()}/src/assets/properties/`);
+        const _path = path.normalize(`${process.cwd()}/src/assets/properties`);
         if (brand === 'global') {
             return `${_path}/globals/`
         } else {
-            return `${_path}/brands/${brand.normalize("NFD").replace(/[\u0300-\u036f]/g, "")}/default`;
+            const _brand = brand && brand.replace(' ', '').toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, '');
+            return `${_path}/brands/${_brand}/default`;
         }
     }
 
@@ -25,11 +26,10 @@ class FigmaTokenController {
         fse.outputFileSync(path.normalize(`${_path}/${fileName}.json`), JSON.stringify(json, 0, 4));
     }
 
-    async getTokens(fileId, brand) {
+    async getTokens(fileId, isGlobalTokens = false) {
         const figmaAPI = new FigmaService(this.authenticationToken);
         const tokensApiData = await figmaAPI.getFigmaTokens(fileId);
-        const tokens = this.mapTokens(tokensApiData['children'], brand);
-        return tokens;
+        this.mapTokens(tokensApiData['children'], isGlobalTokens);
     }
 
     writeFinalTokens(tokensJson, brand) {
@@ -39,13 +39,28 @@ class FigmaTokenController {
         });
     }
 
-    mapTokens(children, brand) {
-        const figmaToken = new FigmaToken(brand);
-        const tokensNode = children.find(child => child.name.toLowerCase().indexOf(brand) >= 0);
-        const tokens = figmaToken.findTokensNode(tokensNode && tokensNode.children);
-        figmaToken.makeTokens(tokens.children);
+    mapTokens(children, isGlobalTokens) {
+        isGlobalTokens ? this.getGlobalTokens(children) : this.getBrandTokens(children);
+    }
+
+    getBrandTokens(children) {
+        let figmaToken = new FigmaToken();
+        const brandNames = figmaToken.getBrandNames(children);
+        brandNames.forEach(brand => {
+            figmaToken = new FigmaToken();
+            const tokens = figmaToken.findTokensNode(children, brand);
+            tokens.forEach(token => figmaToken.makeTokens(token && token.children));
+            const tokensJson = figmaToken.splitTokens(figmaToken.tokens);
+            this.writeFinalTokens(tokensJson, brand);
+        });
+    }
+
+    getGlobalTokens(children) {
+        const figmaToken = new FigmaToken();
+        const tokens = figmaToken.findTokensNode(children, 'global');
+        tokens.forEach(token => figmaToken.makeTokens(token && token.children));
         const tokensJson = figmaToken.splitTokens(figmaToken.tokens);
-        this.writeFinalTokens(tokensJson, brand);
+        this.writeFinalTokens(tokensJson, 'global');
     }
 }
 

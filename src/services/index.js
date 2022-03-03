@@ -1,6 +1,6 @@
 const axios = require('axios');
 
-class FigmaService{
+class FigmaService {
 
   authenticationToken = '';
 

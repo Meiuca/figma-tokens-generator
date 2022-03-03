@@ -21,8 +21,8 @@ function getParameters() {
 function main() {
     const args = getParameters();
     const figmaTokenController = new FigmaTokenController(args.authenticationToken);
-    args.brandTokensFileId && figmaTokenController.getTokens(args.brandTokensFileId, 'estácio');
-    args.globalTokensFileId && figmaTokenController.getTokens(args.globalTokensFileId, 'global');
+    args.brandTokensFileId && figmaTokenController.getTokens(args.brandTokensFileId);
+    args.globalTokensFileId && figmaTokenController.getTokens(args.globalTokensFileId, true);
 }
 
 main();

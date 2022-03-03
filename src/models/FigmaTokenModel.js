@@ -5,29 +5,56 @@ const {
 
 class FigmaToken {
 
-    brand = '';
     tokens = [];
     tokensChildren = [];
+    headersChildren = [];
+    brandNames = [];
 
-    constructor(brand) {
-        this.brand = brand;
-    }
+    constructor() { }
 
     get tokens() {
         return this.tokens;
     }
 
-    findTokensNode(children) {
+    getBrandNames(headerNodes) {
+        let brandNames = [];
+        headerNodes.forEach(header => {
+            const _brandNames = this.findBrandName(header.children);
+            _brandNames.forEach(brandName => {
+                if (brandNames.indexOf(brandName) < 0)
+                    brandNames.push(brandName)
+            });
+        });
+        return brandNames;
+    }
+
+    findBrandName(children) {
+        children.forEach(child => {
+            const brandName = child.characters;
+            const layerName = child.name.toLowerCase().replace(' ', '');
+
+            if (child.children && child.children.length > 0) {
+                return this.findBrandName(child.children);
+            } else if (layerName === 'brandname' && this.brandNames.indexOf(brandName) < 0) {
+                this.brandNames.push(child.characters);
+            }
+        });
+        return this.brandNames;
+    }
+
+    findTokensNode(children, brand, tokensNode = null) {
         if (children && children.length > 0) {
             children.forEach(child => {
-                if (child.name.toLowerCase() === 'tokens') {
-                    this.tokensChildren = child;
+                if (child.characters && child.characters.toLowerCase() === brand.toLowerCase()) {
+                    this.tokensChildren.push(tokensNode);
+                } else if (child.name.toLowerCase() === 'tokens') {
+                    tokensNode = child;
                 }
             });
 
             if (this.tokensChildren.length === 0) {
                 children.forEach(child => {
-                    return this.findTokensNode(child.children || []);
+                    return this.findTokensNode(child.children || [], brand, tokensNode);
                 });
             }
         }
@@ -81,13 +108,11 @@ class FigmaToken {
 
     splitTokens(tokens) {
         let tokenJson = {};
-
         tokens.forEach(token => {
             const partsOfToken = token.value.includes('#') ? (`colors-${token.name}`).split('-') : token.name.split('-');
             const json = this.makeJson(partsOfToken, token.value);
             tokenJson = this.deepMerge(tokenJson, json);
         });
-
         return tokenJson;
     }
 
