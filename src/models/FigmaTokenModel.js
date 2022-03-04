@@ -7,7 +7,6 @@ class FigmaToken {
 
     tokens = [];
     tokensChildren = [];
-    headersChildren = [];
     brandNames = [];
 
     constructor() { }
