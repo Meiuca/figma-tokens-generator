@@ -64,8 +64,7 @@ class FigmaToken {
         let designToken = {};
         if (children && children.length > 0) {
             children.forEach((child, index) => {
-                if (child.name.includes(CHARACTER_TO_INDICATE_VARIABLE)) 
-                {
+                if (child.name.includes(CHARACTER_TO_INDICATE_VARIABLE)) {
                     designToken.name = child.name.toLowerCase().replace(CHARACTER_TO_INDICATE_VARIABLE, '');
                     designToken.value = children[index + OFFSET_VALUE_TO_TOKEN_VALUE].characters;
                 }
