@@ -12,7 +12,7 @@ class FigmaTokenController {
     }
 
     getDirectory(brand) {
-        const _path = path.normalize(`${process.cwd()}/src/assets/properties`);
+        const _path = path.normalize(`${process.cwd()}/src/properties`);
         if (brand === 'global') {
             return `${_path}/globals/`
         } else {
