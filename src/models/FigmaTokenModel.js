@@ -1,6 +1,8 @@
 const { 
     OFFSET_VALUE_TO_TOKEN_VALUE, 
-    CHARACTER_TO_INDICATE_VARIABLE 
+    CHARACTER_TO_INDICATE_VARIABLE,
+    TOKENS_LAYER_NAME,
+    BRAND_LAYER_NAME
 } = require('../utils/constants');
 
 class FigmaToken {
@@ -30,11 +32,11 @@ class FigmaToken {
     findBrandName(children) {
         children.forEach(child => {
             const brandName = child.characters;
-            const layerName = child.name.toLowerCase().replace(' ', '');
+            const layerName = child.name.toUpperCase().replace(' ', '');
 
             if (child.children && child.children.length > 0) {
                 return this.findBrandName(child.children);
-            } else if (layerName === 'brandname' && this.brandNames.indexOf(brandName) < 0) {
+            } else if (layerName === BRAND_LAYER_NAME && this.brandNames.indexOf(brandName) < 0) {
                 this.brandNames.push(child.characters);
             }
         });
@@ -46,7 +48,7 @@ class FigmaToken {
             children.forEach(child => {
                 if (child.characters && child.characters.toLowerCase() === brand.toLowerCase()) {
                     this.tokensChildren.push(tokensNode);
-                } else if (child.name.toLowerCase() === 'tokens') {
+                } else if (child.name.toUpperCase() === TOKENS_LAYER_NAME) {
                     tokensNode = child;
                 }
             });
