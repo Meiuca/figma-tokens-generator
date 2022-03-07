@@ -14,7 +14,8 @@
     "tokens-generator": "./src/cli.js"
   },
   "scripts": {
-    "build": "tokens-generator --authenticationToken=219518-1f6551c0-b808-4490-9bb2-62565c780ed2 --brandTokensFileId=yIiBwSCzgJmDxYtfh7kc0G --globalTokensFileId=2vciHObV1UviJ3f0ItoJVK"
+    "build": "node src/cli.js --authenticationToken=219518-1f6551c0-b808-4490-9bb2-62565c780ed2 --brandTokensFileId=yIiBwSCzgJmDxYtfh7kc0G --globalTokensFileId=2vciHObV1UviJ3f0ItoJVK",
+    "postinstall": "npm run build"
   },
   "keywords": [],
   "author": "",
