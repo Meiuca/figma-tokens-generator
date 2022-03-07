@@ -1,6 +1,6 @@
 {
   "name": "@meiuca/create-tokens-generator",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "",
   "main": "index.js",
   "repository": {
@@ -22,6 +22,7 @@
   "license": "ISC",
   "dependencies": {
     "arg": "^5.0.1",
+    "axios": "^0.26.0",
     "fs-extra": "^10.0.1"
   }
 }
