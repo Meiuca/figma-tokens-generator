@@ -1,21 +1,22 @@
 {
   "name": "@meiuca/create-tokens-generator",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "",
-  "main": "index.js",
+  "main": "src/index.js",
   "repository": {
     "type": "git",
     "url": "git@github.com:Meiuca/tokens-generator.git"
   },
   "files": [
+    "bin",
     "src"
   ],
   "bin": {
-    "tokens-generator": "./src/cli.js"
+    "@meiuca/tokens-generator": "bin/tokens-generator",
+    "tokens-generator": "bin/tokens-generator"
   },
   "scripts": {
-    "build": "node src/cli.js --authenticationToken=219518-1f6551c0-b808-4490-9bb2-62565c780ed2 --brandTokensFileId=yIiBwSCzgJmDxYtfh7kc0G --globalTokensFileId=2vciHObV1UviJ3f0ItoJVK",
-    "postinstall": "npm run build"
+    "build": "node src/index.js --authenticationToken=219518-1f6551c0-b808-4490-9bb2-62565c780ed2 --brandTokensFileId=yIiBwSCzgJmDxYtfh7kc0G --globalTokensFileId=2vciHObV1UviJ3f0ItoJVK"
   },
   "keywords": [],
   "author": "",
@@ -23,6 +24,7 @@
   "dependencies": {
     "arg": "^5.0.1",
     "axios": "^0.26.0",
+    "esm": "^3.2.25",
     "fs-extra": "^10.0.1"
   }
 }

@@ -19,10 +19,13 @@ function getParameters() {
 }
 
 function main() {
+    console.log("passou no main")
     const args = getParameters();
     const figmaTokenController = new FigmaTokenController(args.authenticationToken);
     args.brandTokensFileId && figmaTokenController.getTokens(args.brandTokensFileId);
     args.globalTokensFileId && figmaTokenController.getTokens(args.globalTokensFileId, true);
 }
 
-main();
+module.exports = {
+    main
+}
