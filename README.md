@@ -26,3 +26,9 @@ Após a instalação adicionar a chave no package.json:
     "build-tokens": "tokens-generator --authenticationToken=[SEU_TOKEN_DE_AUTENTICACAO] --brandTokensFileId=[BRAND_TOKEN_ID] --globalTokensFileId=[GLOBAL_TOKEN_ID]"
 }
 ```
+
+Por fim, executar o comando a seguir, para criar os tokens em .json: 
+
+```
+npm run build-tokens
+```
