@@ -3,7 +3,7 @@ Este projeto tem por objetivo consumir o tokens criados no Figma. O processo é 
 
 **Parâmetro 1**: --authenticationToken
 
-![image](https://user-images.githubusercontent.com/32777538/157044011-5264ec67-df39-400d-a1b1-ac00946f1b50.png)
+![image](https://user-images.githubusercontent.com/32777538/157046217-fc57181a-6027-477b-b2ae-46241d53c11a.png)
 
 **Parâmetro 2**: --brandTokensFileId
 
