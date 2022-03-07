@@ -1,0 +1,15 @@
+# tokens-generator
+Este projeto tem por objetivo consumir o tokens criados no Figma. O processo é realizado através da api do Figma, onde é possível automatizar todo o trabalho manual. Três parâmetros são necessários para o funcionamento, são eles:
+
+**Parâmetro 1**: --authenticationToken
+
+![image](https://user-images.githubusercontent.com/32777538/157044011-5264ec67-df39-400d-a1b1-ac00946f1b50.png)
+
+**Parâmetro 2**: --brandTokensFileId
+
+![image](https://user-images.githubusercontent.com/32777538/157044489-ffcd26be-63c4-40bb-84e5-43e80f8fc464.png)
+
+**Parâmetro 3**: --globalTokensFileId
+
+![image](https://user-images.githubusercontent.com/32777538/157044650-5a40ca62-f4c7-423a-b57c-0ec32326e117.png)
+
