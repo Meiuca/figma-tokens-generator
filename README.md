@@ -13,3 +13,16 @@ Este projeto tem por objetivo consumir o tokens criados no Figma. O processo é 
 
 ![image](https://user-images.githubusercontent.com/32777538/157044650-5a40ca62-f4c7-423a-b57c-0ec32326e117.png)
 
+Para gerar os tokens de forma simples basta instalar a lib, como demonstrado a seguir:
+
+```
+npm install @meiuca/tokens-generator -D
+```
+
+Após a instalação adicionar a chave no package.json:
+
+```javascript
+"scripts": {
+    "build-tokens": "tokens-generator --authenticationToken=[SEU_TOKEN_DE_AUTENTICACAO] --brandTokensFileId=[BRAND_TOKEN_ID] --globalTokensFileId=[GLOBAL_TOKEN_ID]"
+}
+```
