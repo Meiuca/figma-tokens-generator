@@ -12,7 +12,6 @@ class FigmaTokenController {
     }
 
     getDirectory(brand) {
-        console.log(process.cwd());
         const _path = path.normalize(`${process.cwd()}/src/properties`);
         if (brand === 'global') {
             return `${_path}/globals/`
