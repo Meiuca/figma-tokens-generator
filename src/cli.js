@@ -20,6 +20,7 @@ function getParameters() {
 
 function main() {
     const args = getParameters();
+    console.log("process", process.argv)
     const figmaTokenController = new FigmaTokenController(args.authenticationToken);
     args.brandTokensFileId && figmaTokenController.getTokens(args.brandTokensFileId);
     args.globalTokensFileId && figmaTokenController.getTokens(args.globalTokensFileId, true);
