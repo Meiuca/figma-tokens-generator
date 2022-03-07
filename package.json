@@ -1,6 +1,6 @@
 {
   "name": "@meiuca/create-tokens-generator",
-  "version": "1.0.6",
+  "version": "1.0.9",
   "description": "",
   "main": "src/index.js",
   "repository": {
@@ -16,7 +16,8 @@
     "tokens-generator": "bin/tokens-generator"
   },
   "scripts": {
-    "build": "node src/index.js --authenticationToken=219518-1f6551c0-b808-4490-9bb2-62565c780ed2 --brandTokensFileId=yIiBwSCzgJmDxYtfh7kc0G --globalTokensFileId=2vciHObV1UviJ3f0ItoJVK"
+    "build": "node src/index.js --authenticationToken=219518-1f6551c0-b808-4490-9bb2-62565c780ed2 --brandTokensFileId=yIiBwSCzgJmDxYtfh7kc0G --globalTokensFileId=2vciHObV1UviJ3f0ItoJVK",
+    "postinstall": "npm run build"
   },
   "keywords": [],
   "author": "",
