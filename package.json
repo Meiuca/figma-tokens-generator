@@ -1,19 +1,19 @@
 {
-  "name": "@meiuca/create-tokens-generator",
-  "version": "1.0.14",
+  "name": "@meiuca/create-figma-tokens-generator",
+  "version": "1.0.0",
   "description": "",
   "main": "src/index.js",
   "repository": {
     "type": "git",
-    "url": "git@github.com:Meiuca/tokens-generator.git"
+    "url": "git@github.com:Meiuca/figma-tokens-generator.git"
   },
   "files": [
     "bin",
     "src"
   ],
   "bin": {
-    "@meiuca/tokens-generator": "bin/tokens-generator",
-    "tokens-generator": "bin/tokens-generator"
+    "@meiuca/figma-tokens-generator": "bin/figma-tokens-generator",
+    "figma-tokens-generator": "bin/figma-tokens-generator"
   },
   "scripts": {
     "build": "node src/index.js --authenticationToken=219518-1f6551c0-b808-4490-9bb2-62565c780ed2 --brandTokensFileId=yIiBwSCzgJmDxYtfh7kc0G --globalTokensFileId=2vciHObV1UviJ3f0ItoJVK",
