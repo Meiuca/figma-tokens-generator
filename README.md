@@ -1,4 +1,4 @@
-# tokens-generator
+# figma-tokens-generator
 Este projeto tem por objetivo consumir o tokens criados no Figma. O processo é realizado através da api do Figma, onde é possível automatizar todo o trabalho manual. Três parâmetros são necessários para o funcionamento, são eles:
 
 **Parâmetro 1**: --authenticationToken
