@@ -2,14 +2,41 @@ const {
     OFFSET_VALUE_TO_TOKEN_VALUE, 
     CHARACTER_TO_INDICATE_VARIABLE,
     TOKENS_LAYER_NAME,
-    BRAND_LAYER_NAME
+    BRAND_LAYER_NAME,
+    THEME_LAYER_NAME,
+    MODE_LAYER_NAME
 } = require('../utils/constants');
 
 class FigmaToken {
 
     tokens = [];
     tokensChildren = [];
-    brandNames = [];
+    figmaTextList = [];
+    figmaBrandsModel = {
+        brands: [
+            {
+                name: "Marca A",
+                themes: [
+                    {
+                        name: "Default",
+                        modes: [
+                            {
+                                name: "Dark"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                name: "Marca B",
+                themes: [
+                    {
+                        name: "Default"
+                    }
+                ]
+            }
+        ]
+    }
 
     constructor() { }
 
@@ -17,31 +44,46 @@ class FigmaToken {
         return this.tokens;
     }
 
-    getBrandNames(headerNodes) {
-        let brandNames = [];
-        headerNodes.forEach(header => {
-            const _brandNames = this.findBrandName(header.children);
-            _brandNames.forEach(brandName => {
-                if (brandNames.indexOf(brandName) < 0)
-                    brandNames.push(brandName)
-            });
-        });
-        
-        return brandNames;
+    getModeNames(figmaPageNodes){
+        return this.getFigmaNodeByName(figmaPageNodes, MODE_LAYER_NAME);
     }
 
-    findBrandName(children) {
-        children.forEach(child => {
-            const brandName = child.characters;
-            const layerName = child.name.toUpperCase().replace(' ', '');
+    getThemeNames(figmaPageNodes){
+        return this.getFigmaNodeByName(figmaPageNodes, THEME_LAYER_NAME);
+    }
 
-            if (child.children && child.children.length > 0) {
-                return this.findBrandName(child.children);
-            } else if (layerName === BRAND_LAYER_NAME && this.brandNames.indexOf(brandName) < 0) {
-                this.brandNames.push(child.characters);
+    getBrandNames(figmaPageNodes){
+        return this.getFigmaNodeByName(figmaPageNodes, BRAND_LAYER_NAME);
+    }
+
+    getFigmaNodeByName(figmaPageNodes, name) {
+        let nodeNames = [];
+        figmaPageNodes.forEach(page => {
+            const _nodeNames = this.findLayerByName(page.children, name);
+            _nodeNames.forEach(nodeName => {
+                if (nodeNames.indexOf(nodeName) < 0)
+                    nodeNames.push(nodeName)
+            });
+        });
+
+        return nodeNames;
+    }
+
+    findLayerByName(layers, nameToCompare) {
+        layers.forEach(layer => {
+            const layerContent = layer.characters;
+            const layerName = layer.name.toUpperCase().replace(' ', '');
+
+            //console.log(layerName, layerContent)
+
+            if (layer.children && layer.children.length > 0) {
+                return this.findLayerByName(layer.children, nameToCompare);
+            } else if (layerName === nameToCompare && this.figmaTextList.indexOf(layerContent) < 0) {
+                this.figmaTextList.push(layer.characters);
             }
         });
-        return this.brandNames;
+
+        return this.figmaTextList;
     }
 
     findTokensNode(children, brand, tokensNode = null) {
