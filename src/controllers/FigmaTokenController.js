@@ -1,4 +1,5 @@
 const fse = require('fs-extra');
+const fs = require('fs');
 const path = require('path');
 
 const FigmaService = require("../services");
@@ -55,6 +56,7 @@ class FigmaTokenController {
             
             brandNames.forEach(brand => {
                 const currentPath = figmaToken.createDiskPathsByBrand(figmaToken.figmaModel.brands, convertToKebabCase(brand))[0];
+                console.log(currentPath)
                 this.writeFinalTokens(tokensJson, currentPath);
             });
         })

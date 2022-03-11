@@ -21,8 +21,24 @@ function getParameters() {
 function main() {
     const args = getParameters();
     const figmaTokenController = new FigmaTokenController(args.authenticationToken);
-    args.brandTokensFileId && figmaTokenController.getTokens(args.brandTokensFileId);
-    args.globalTokensFileId && figmaTokenController.getTokens(args.globalTokensFileId, true);
+
+    if(args.brandTokensFileId){
+        const brandTokenIds = splitTokenParams(args.brandTokensFileId);
+
+        brandTokenIds.forEach(id => {
+            figmaTokenController.getTokens(id);
+        })
+    }
+
+    if(args.globalTokensFileId){
+        figmaTokenController.getTokens(args.globalTokensFileId, true);
+    }
+
+    
+}
+
+function splitTokenParams(tokens = ""){
+    return tokens.split(",");
 }
 
 module.exports = {
