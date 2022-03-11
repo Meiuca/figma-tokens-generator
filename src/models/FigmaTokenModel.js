@@ -170,17 +170,21 @@ class FigmaToken {
         const currentBrandIndex = brands.findIndex(element => element.name == brand);
         const currentBrand= brands[currentBrandIndex];
 
-        for(let themeIndex in currentBrand.themes){
-            const currentTheme = currentBrand.themes[themeIndex]; 
-           
-            if(currentTheme.modes.length > 0){
-                for(let modeIndex in currentTheme.modes){
-                    const currentMode = currentTheme.modes[modeIndex];
-                    results.push(path.join(currentBrand.name, currentTheme.name, currentMode.name))
-                }
-           } else {
-              results.push(path.join(currentBrand.name, currentTheme.name))
-           }
+        if(currentBrand.themes.length > 0){
+            for(let themeIndex in currentBrand.themes){
+                const currentTheme = currentBrand.themes[themeIndex]; 
+               
+                if(currentTheme.modes.length > 0){
+                    for(let modeIndex in currentTheme.modes){
+                        const currentMode = currentTheme.modes[modeIndex];
+                        results.push(path.join(currentBrand.name, currentTheme.name, currentMode.name))
+                    }
+               } else {
+                  results.push(path.join(currentBrand.name, currentTheme.name))
+               }
+            }
+        } else {
+            results.push(path.join(currentBrand.name, "default"))
         }
 
         return results;

@@ -47,21 +47,16 @@ class FigmaTokenController {
     getBrandTokens(figmaPages) {
         figmaPages.forEach(page => {
             let figmaToken = new FigmaToken();
-            const brandData = figmaToken.getBrandData(page);
+            const brandNames = figmaToken.getBrandData(page);
 
             const tokens = figmaToken.findTokensByPage(page.children);
             tokens.forEach(token => figmaToken.makeTokens(token && token.children));
             const tokensJson = figmaToken.splitTokens(figmaToken.tokens);
-
-            logFullObject(brandData)
-            /*brandNames.forEach(brand => {
-                const tokens = figmaToken.findTokensNode(page.children, brand);
-                
-                tokens.forEach(token => figmaToken.makeTokens(token && token.children));
-                const tokensJson = figmaToken.splitTokens(figmaToken.tokens);
-    
-                //this.writeFinalTokens(tokensJson, currentPaths);
-            });*/
+            
+            brandNames.forEach(brand => {
+                const currentPath = figmaToken.createDiskPathsByBrand(figmaToken.figmaModel.brands, convertToKebabCase(brand))[0];
+                this.writeFinalTokens(tokensJson, currentPath);
+            });
         })
 
         
@@ -69,10 +64,10 @@ class FigmaTokenController {
 
     getGlobalTokens(children) {
         const figmaToken = new FigmaToken();
-        const tokens = figmaToken.findTokensByPage(children, 'global');
-        /*tokens.forEach(token => figmaToken.makeTokens(token && token.children));
+        const tokens = figmaToken.findTokensByPage(children);
+        tokens.forEach(token => figmaToken.makeTokens(token && token.children));
         const tokensJson = figmaToken.splitTokens(figmaToken.tokens);
-        this.writeFinalTokens(tokensJson, 'global');*/
+        this.writeFinalTokens(tokensJson, 'global');
     }
 
     
