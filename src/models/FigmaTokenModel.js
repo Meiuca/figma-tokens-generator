@@ -1,10 +1,12 @@
+const util = require('util')
+
 const { 
     OFFSET_VALUE_TO_TOKEN_VALUE, 
+    OFFSET_VALUE_TO_THEME_VALUE,
+    OFFSET_VALUE_TO_MODE_VALUE,
     CHARACTER_TO_INDICATE_VARIABLE,
     TOKENS_LAYER_NAME,
-    BRAND_LAYER_NAME,
-    THEME_LAYER_NAME,
-    MODE_LAYER_NAME
+    BRAND_LAYER_NAME
 } = require('../utils/constants');
 
 class FigmaBrand {
@@ -62,6 +64,7 @@ class FigmaToken {
     tokens = [];
     tokensChildren = [];
     figmaTextList = [];
+    figmaModel = new FigmaBrand();
 
     constructor() { }
 
@@ -96,7 +99,14 @@ class FigmaToken {
                 return this.findLayerByName(layer.children, nameToCompare);
             } else if (layerName === nameToCompare && this.figmaTextList.indexOf(layerContent) < 0) {
                 this.figmaTextList.push(layer.characters);
+                
+                if(layerName === "BRANDNAME"){
+                    this.figmaModel.addNewBrand(layerContent);
+                    this.figmaModel.addNewtheme(layerContent, layers[index + OFFSET_VALUE_TO_THEME_VALUE].characters);
+                    this.figmaModel.addNewMode(layerContent, layers[index + OFFSET_VALUE_TO_THEME_VALUE].characters, layers[index + OFFSET_VALUE_TO_MODE_VALUE].characters);
 
+                    console.log(util.inspect(this.figmaModel, false, null, true /* enable colors */))
+                }
                 
             }
         });
