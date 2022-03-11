@@ -6,8 +6,12 @@ const {
     OFFSET_VALUE_TO_MODE_VALUE,
     CHARACTER_TO_INDICATE_VARIABLE,
     TOKENS_LAYER_NAME,
-    BRAND_LAYER_NAME
+    BRAND_LAYER_NAME,
+    THEME_LAYER_NAME,
+    MODE_LAYER_NAME
 } = require('../utils/constants');
+
+const helpers = require("../utils/helpers");
 
 class FigmaBrand {
     constructor(){
@@ -93,18 +97,31 @@ class FigmaToken {
     findLayerByName(layers, nameToCompare) {
         layers.forEach((layer, index) => {
             const layerContent = layer.characters;
-            const layerName = layer.name.toUpperCase().replace(' ', '');
+            const layerName = helpers.convertToCleanUpperCase(layer.name);
 
             if (layer.children && layer.children.length > 0) {
                 return this.findLayerByName(layer.children, nameToCompare);
             } else if (layerName === nameToCompare && this.figmaTextList.indexOf(layerContent) < 0) {
                 this.figmaTextList.push(layer.characters);
                 
-                if(layerName === "BRANDNAME"){
-                    this.figmaModel.addNewBrand(layerContent);
-                    this.figmaModel.addNewtheme(layerContent, layers[index + OFFSET_VALUE_TO_THEME_VALUE].characters);
-                    this.figmaModel.addNewMode(layerContent, layers[index + OFFSET_VALUE_TO_THEME_VALUE].characters, layers[index + OFFSET_VALUE_TO_MODE_VALUE].characters);
+                if(layerName === BRAND_LAYER_NAME){
+                    const brandContent = helpers.convertToKebabCase(layerContent);
+                    const themeContent = helpers.convertToKebabCase(layers[index + OFFSET_VALUE_TO_THEME_VALUE]?.characters);
+                    const modeContent = helpers.convertToKebabCase(layers[index + OFFSET_VALUE_TO_MODE_VALUE].characters)
 
+                    const themeLayerName = helpers.convertToCleanUpperCase(layers[index + OFFSET_VALUE_TO_THEME_VALUE]?.name);
+                    const modeLayerName = helpers.convertToCleanUpperCase(layers[index + OFFSET_VALUE_TO_MODE_VALUE]?.name);
+
+                    this.figmaModel.addNewBrand(brandContent);
+
+                    if(layers[index + OFFSET_VALUE_TO_THEME_VALUE] && themeLayerName === THEME_LAYER_NAME){
+                        this.figmaModel.addNewtheme(brandContent, themeContent);
+                    }
+
+                    if(layers[index + OFFSET_VALUE_TO_MODE_VALUE] && modeLayerName === MODE_LAYER_NAME){
+                        this.figmaModel.addNewMode(brandContent, themeContent, modeContent);
+                    }
+                        
                     console.log(util.inspect(this.figmaModel, false, null, true /* enable colors */))
                 }
                 
@@ -113,6 +130,8 @@ class FigmaToken {
 
         return this.figmaTextList;
     }
+
+   
 
     findTokensNode(children, brand, tokensNode = null) {
         if (children && children.length > 0) {
