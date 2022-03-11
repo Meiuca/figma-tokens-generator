@@ -16,7 +16,7 @@
       "figma-tokens-generator": "bin/figma-tokens-generator"
     },
     "scripts": {
-      "build": "node src/index.js --authenticationToken=219518-1f6551c0-b808-4490-9bb2-62565c780ed2 --brandTokensFileId=EtYaLp3IbxzYgMC76ULk82,CnZ8YxpG91EH4h68OxMibN --globalTokensFileId=2vciHObV1UviJ3f0ItoJVK",
+      "build": "node src/index.js --authenticationToken=219518-1f6551c0-b808-4490-9bb2-62565c780ed2 --brandTokensFileId=EtYaLp3IbxzYgMC76ULk82 --globalTokensFileId=2vciHObV1UviJ3f0ItoJVK",
       "postinstall": "npm run build"
     },
     "keywords": [],
