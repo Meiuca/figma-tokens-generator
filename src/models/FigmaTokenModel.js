@@ -1,4 +1,4 @@
-const util = require('util')
+const path = require('path');
 
 const { 
     OFFSET_VALUE_TO_TOKEN_VALUE, 
@@ -28,34 +28,33 @@ class FigmaToken {
         return this.tokens;
     }
 
-    getBrandNames(figmaPageNodes){
+    getBrandData(figmaPageNodes){
         return this.getFigmaNodeByName(figmaPageNodes, BRAND_LAYER_NAME);
     }
 
-    getFigmaNodeByName(figmaPageNodes, name) {
+    getFigmaNodeByName(page, name) {
         let nodeNames = [];
-        figmaPageNodes.forEach(page => {
-            const _layerNames = this.findLayerByName(page.children, name);
+        
+        const _layerNames = this.populateFigmaModel(page.children, name);
 
-            _layerNames.forEach(layerName => {
-                if (nodeNames.indexOf(layerName) < 0)
-                    nodeNames.push(layerName)
-            });
+        _layerNames.forEach(layerName => {
+            if (nodeNames.indexOf(layerName) < 0)
+                nodeNames.push(layerName)
         });
 
         return nodeNames;
     }
 
-    findLayerByName(layers, nameToCompare) {
+    populateFigmaModel(layers, nameToCompare) {
         layers.forEach((layer, index) => {
             const layerContent = layer.characters;
             const layerName = helpers.convertToCleanUpperCase(layer.name);
 
             if (layer.children && layer.children.length > 0) {
-                return this.findLayerByName(layer.children, nameToCompare);
-            } else if (layerName === nameToCompare && this.figmaTextList.indexOf(layerContent) < 0) {
+                return this.populateFigmaModel(layer.children, nameToCompare);
+            } else if (layerName === nameToCompare) {
                 this.figmaTextList.push(layer.characters);
-                
+
                 if(layerName === BRAND_LAYER_NAME){
                     const brandContent = helpers.convertToKebabCase(layerContent);
                     const themeContent = helpers.convertToKebabCase(layers[index + OFFSET_VALUE_TO_THEME_VALUE]?.characters);
@@ -73,8 +72,6 @@ class FigmaToken {
                     if(layers[index + OFFSET_VALUE_TO_MODE_VALUE] && modeLayerName === MODE_LAYER_NAME){
                         this.figmaModel.addNewMode(brandContent, themeContent, modeContent);
                     }
-                        
-                    console.log(util.inspect(this.figmaModel, false, null, true /* enable colors */))
                 }
                 
             }
@@ -83,24 +80,21 @@ class FigmaToken {
         return this.figmaTextList;
     }
 
-   
-
-    findTokensNode(children, brand, tokensNode = null) {
-        if (children && children.length > 0) {
-            children.forEach(child => {
-                if (child.characters && child.characters.toLowerCase() === brand.toLowerCase()) {
-                    this.tokensChildren.push(tokensNode);
-                } else if (child.name.toUpperCase() === TOKENS_LAYER_NAME) {
-                    tokensNode = child;
-                }
+    findTokensByPage(layers) {
+        if (layers && layers.length > 0) {
+            layers.forEach(layer => {
+                if (layer.name.toUpperCase() === TOKENS_LAYER_NAME) {
+                    this.tokensChildren.push(layer);
+                } 
             });
 
-            if (this.tokensChildren.length === 0) {
-                children.forEach(child => {
-                    return this.findTokensNode(child.children || [], brand, tokensNode);
+            if(this.tokensChildren.length === 0){
+                layers.forEach(layer => {
+                    return this.findTokensByPage(layer.children || []);
                 });
-            }
+            } 
         }
+
         return this.tokensChildren;
     }
 
@@ -168,6 +162,28 @@ class FigmaToken {
                         : void (source[key] = target[key])
                 : void (source[key] = target[key]);
         }) || source;
+    }
+
+    createDiskPathsByBrand(brands, brand){
+        const results = [];
+
+        const currentBrandIndex = brands.findIndex(element => element.name == brand);
+        const currentBrand= brands[currentBrandIndex];
+
+        for(let themeIndex in currentBrand.themes){
+            const currentTheme = currentBrand.themes[themeIndex]; 
+           
+            if(currentTheme.modes.length > 0){
+                for(let modeIndex in currentTheme.modes){
+                    const currentMode = currentTheme.modes[modeIndex];
+                    results.push(path.join(currentBrand.name, currentTheme.name, currentMode.name))
+                }
+           } else {
+              results.push(path.join(currentBrand.name, currentTheme.name))
+           }
+        }
+
+        return results;
     }
 }
 
