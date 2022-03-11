@@ -46,8 +46,10 @@ class FigmaTokenController {
     getBrandTokens(children) {
         let figmaToken = new FigmaToken();
         const brandNames = figmaToken.getBrandNames(children);
+        /*const themeNames = figmaToken.getThemeNames(children);
+        const modeNames = figmaToken.getModeNames(children);
 
-        console.log(brandNames)
+        console.log(brandNames, themeNames, modeNames);*/
 
         brandNames.forEach(brand => {
             figmaToken = new FigmaToken();

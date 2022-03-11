@@ -1,0 +1,41 @@
+{
+    "border": {
+        "radius": {
+            "none": {
+                "value": "0px"
+            },
+            "sm": {
+                "value": "8px"
+            },
+            "md": {
+                "value": "16px"
+            },
+            "lg": {
+                "value": "24px"
+            },
+            "pill": {
+                "value": "≥ 500px"
+            },
+            "circular": {
+                "value": "50%"
+            }
+        },
+        "width": {
+            "none": {
+                "value": "0px"
+            },
+            "thin": {
+                "value": "2px"
+            },
+            "thick": {
+                "value": "4px"
+            },
+            "heavy": {
+                "value": "8px"
+            },
+            "black": {
+                "value": "16px"
+            }
+        }
+    }
+}

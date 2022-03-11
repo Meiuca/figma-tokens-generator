@@ -7,49 +7,66 @@ const {
     MODE_LAYER_NAME
 } = require('../utils/constants');
 
+class FigmaBrand {
+    constructor(){
+        this.brands = [];
+    }
+
+    addNewBrand(brand){
+        const brandIndex = this.brands.findIndex(element => element.name === brand);
+
+        if(brandIndex === -1){
+            this["brands"].push({
+                name: brand,
+                themes: []
+            })
+        } else {
+            console.error("A marca já existe");
+            return false;
+        }
+    }
+
+    addNewtheme(brand, theme){
+        const brandIndex = this.brands.findIndex(element => element.name === brand);
+        const themeIndex = this.brands[brandIndex].themes.findIndex(element => element.name === theme);
+        
+        if(themeIndex === -1){
+            this.brands[brandIndex].themes.push({
+                name: theme,
+                modes: []
+            })
+        } else {
+            console.error("O tema já existe");
+            return false;
+        }
+    }
+
+    addNewMode(brand, theme, mode){
+        const brandIndex = this.brands.findIndex(element => element.name === brand);
+        const themeIndex = this.brands[brandIndex].themes.findIndex(element => element.name === theme);
+        const modesIndex = this.brands[brandIndex].themes[themeIndex].modes.findIndex(element => element.name === mode);
+
+        if(modesIndex === -1){
+            this.brands[brandIndex].themes[themeIndex].modes.push({
+                name: mode
+            })
+        } else{
+            console.error("O modo já existe");
+            return false;
+        }
+    }
+}
+
 class FigmaToken {
 
     tokens = [];
     tokensChildren = [];
     figmaTextList = [];
-    figmaBrandsModel = {
-        brands: [
-            {
-                name: "Marca A",
-                themes: [
-                    {
-                        name: "Default",
-                        modes: [
-                            {
-                                name: "Dark"
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                name: "Marca B",
-                themes: [
-                    {
-                        name: "Default"
-                    }
-                ]
-            }
-        ]
-    }
 
     constructor() { }
 
     get tokens() {
         return this.tokens;
-    }
-
-    getModeNames(figmaPageNodes){
-        return this.getFigmaNodeByName(figmaPageNodes, MODE_LAYER_NAME);
-    }
-
-    getThemeNames(figmaPageNodes){
-        return this.getFigmaNodeByName(figmaPageNodes, THEME_LAYER_NAME);
     }
 
     getBrandNames(figmaPageNodes){
@@ -59,10 +76,11 @@ class FigmaToken {
     getFigmaNodeByName(figmaPageNodes, name) {
         let nodeNames = [];
         figmaPageNodes.forEach(page => {
-            const _nodeNames = this.findLayerByName(page.children, name);
-            _nodeNames.forEach(nodeName => {
-                if (nodeNames.indexOf(nodeName) < 0)
-                    nodeNames.push(nodeName)
+            const _layerNames = this.findLayerByName(page.children, name);
+
+            _layerNames.forEach(layerName => {
+                if (nodeNames.indexOf(layerName) < 0)
+                    nodeNames.push(layerName)
             });
         });
 
@@ -70,16 +88,16 @@ class FigmaToken {
     }
 
     findLayerByName(layers, nameToCompare) {
-        layers.forEach(layer => {
+        layers.forEach((layer, index) => {
             const layerContent = layer.characters;
             const layerName = layer.name.toUpperCase().replace(' ', '');
-
-            //console.log(layerName, layerContent)
 
             if (layer.children && layer.children.length > 0) {
                 return this.findLayerByName(layer.children, nameToCompare);
             } else if (layerName === nameToCompare && this.figmaTextList.indexOf(layerContent) < 0) {
                 this.figmaTextList.push(layer.characters);
+
+                
             }
         });
 

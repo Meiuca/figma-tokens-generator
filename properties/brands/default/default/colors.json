@@ -1,0 +1,66 @@
+{
+    "primary": {
+        "action": {
+            "color": {
+                "pure": {
+                    "value": "#144BC8",
+                    "type": "color"
+                },
+                "high": {
+                    "value": "#C2D4FF",
+                    "type": "color"
+                },
+                "low": {
+                    "value": "#001F66",
+                    "type": "color"
+                }
+            }
+        }
+    },
+    "background": {
+        "color": {
+            "system": {
+                "pure": {
+                    "value": "#46C8C8",
+                    "type": "color"
+                },
+                "high": {
+                    "value": "#D0F1F1",
+                    "type": "color"
+                },
+                "low": {
+                    "value": "#1C5E5E",
+                    "type": "color"
+                }
+            },
+            "public01": {
+                "pure": {
+                    "value": "#33C0FF",
+                    "type": "color"
+                },
+                "high": {
+                    "value": "#C2ECFF",
+                    "type": "color"
+                },
+                "low": {
+                    "value": "#00557A",
+                    "type": "color"
+                }
+            },
+            "public02": {
+                "pure": {
+                    "value": "#6930C5",
+                    "type": "color"
+                },
+                "high": {
+                    "value": "#DCCEF3",
+                    "type": "color"
+                },
+                "low": {
+                    "value": "#341862",
+                    "type": "color"
+                }
+            }
+        }
+    }
+}
