@@ -23,6 +23,6 @@ Caso deseje exportar múltiplas folhas de marca, chamadas aqui de brandTokens, b
 
 ```javascript
 "scripts": {
-    "build-tokens": "tokens-generator --authenticationToken=[SEU_TOKEN_DE_AUTENTICACAO] --brandTokensFileId=[BRAND_TOKEN_ID],[BRAND_TOKEN_ID] --globalTokensFileId=[GLOBAL_TOKEN_ID]"
+    "build-tokens": "figma-tokens-generator --authenticationToken=[SEU_TOKEN_DE_AUTENTICACAO] --brandTokensFileId=[BRAND_TOKEN_ID],[BRAND_TOKEN_ID] --globalTokensFileId=[GLOBAL_TOKEN_ID]"
 }
 ```
