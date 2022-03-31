@@ -16,11 +16,19 @@ Token de autenticação gerado através [dessa url do Figma](https://www.figma.c
 
 O id do seu arquivo Figma: 
 
-https://www.figma.com/file/**EtYaLp3IbxzYgMC76ULk82**/Brand-Tokens---Tokens-Generator-Template
+https://www.figma.com/file/EtYaLp3IbxzYgMC76ULk82/Brand-Tokens---Tokens-Generator-Template
+
+Onde EtYaLp3IbxzYgMC76ULk82 é este ID
 
 ![image](https://user-images.githubusercontent.com/32777538/157044489-ffcd26be-63c4-40bb-84e5-43e80f8fc464.png)
 
 **Parâmetro 3**: --globalTokensFileId
+
+O id do seu arquivo Figma: 
+
+https://www.figma.com/file/1pOwLHKmul9Q8iTV4QlhAW/Global-Tokens---Tokens-Generator-Template?node-id=9%3A2
+
+Onde 1pOwLHKmul9Q8iTV4QlhAW é este ID
 
 ![image](https://user-images.githubusercontent.com/32777538/157044650-5a40ca62-f4c7-423a-b57c-0ec32326e117.png)
 
